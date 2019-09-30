@@ -9,12 +9,13 @@ Summary:	IPython kernel for Jupyter
 Summary(pl.UTF-8):	Jądro IPythona dla Jupytera
 Name:		python-ipykernel
 Version:	4.10.1
-Release:	1
+Release:	2
 License:	BSD
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/ipykernel/
 Source0:	https://files.pythonhosted.org/packages/source/i/ipykernel/ipykernel-%{version}.tar.gz
 # Source0-md5:	23871bb7da2907749cb65a9446c9e637
+Patch0:		%{name}-use_setuptools.patch
 URL:		https://pypi.org/project/ipykernel/
 %if %{with python2}
 BuildRequires:	python-modules >= 1:2.7
@@ -85,6 +86,7 @@ Dokumentacja API modułu Pythona ipykernel.
 
 %prep
 %setup -q -n ipykernel-%{version}
+%patch0 -p1
 
 %build
 %if %{with python2}
