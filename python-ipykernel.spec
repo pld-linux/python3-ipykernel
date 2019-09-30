@@ -50,7 +50,7 @@ BuildRequires:	sed >= 4.0
 BuildRequires:	python3-sphinxcontrib_github_alt
 BuildRequires:	sphinx-pdg-3
 %endif
-Requires:	python-modules >= 1:3.4
+Requires:	python-modules >= 1:2.7
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
