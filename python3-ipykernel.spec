@@ -17,6 +17,7 @@ URL:		https://pypi.org/project/ipykernel/
 BuildRequires:	python3-modules >= 1:3.4
 BuildRequires:	python3-setuptools
 %if %{with tests}
+BuildRequires:	python3-flaky
 BuildRequires:	python3-ipython >= 5.0.0
 BuildRequires:	python3-jupyter_client
 BuildRequires:	python3-nose
