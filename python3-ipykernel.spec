@@ -6,13 +6,13 @@
 Summary:	IPython kernel for Jupyter
 Summary(pl.UTF-8):	Jądro IPythona dla Jupytera
 Name:		python3-ipykernel
-Version:	5.3.4
+Version:	5.5.5
 Release:	1
 License:	BSD
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/ipykernel/
 Source0:	https://files.pythonhosted.org/packages/source/i/ipykernel/ipykernel-%{version}.tar.gz
-# Source0-md5:	d9ad6a4a4235940d65300e33f541edf5
+# Source0-md5:	06e45221c8b70cd8edf95b321f20feae
 URL:		https://pypi.org/project/ipykernel/
 BuildRequires:	python3-jupyter_client
 BuildRequires:	python3-modules >= 1:3.5
@@ -20,6 +20,7 @@ BuildRequires:	python3-setuptools
 %if %{with tests}
 BuildRequires:	python3-flaky
 BuildRequires:	python3-ipython >= 5.0.0
+BuildRequires:	python3-jedi <= 0.17.2
 BuildRequires:	python3-nose
 BuildRequires:	python3-pytest
 BuildRequires:	python3-pytest-cov
@@ -60,6 +61,7 @@ Dokumentacja API modułu Pythona ipykernel.
 %py3_build
 
 %if %{with tests}
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
 PYTHONPATH=$(pwd) \
 %{__python3} -m pytest ipykernel
 %endif
