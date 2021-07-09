@@ -6,26 +6,33 @@
 Summary:	IPython kernel for Jupyter
 Summary(pl.UTF-8):	Jądro IPythona dla Jupytera
 Name:		python3-ipykernel
-Version:	5.5.5
+Version:	6.0.1
 Release:	1
 License:	BSD
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/ipykernel/
 Source0:	https://files.pythonhosted.org/packages/source/i/ipykernel/ipykernel-%{version}.tar.gz
-# Source0-md5:	06e45221c8b70cd8edf95b321f20feae
+# Source0-md5:	3655186f89d16ae12bf592ed69d866ba
 URL:		https://pypi.org/project/ipykernel/
 BuildRequires:	python3-jupyter_client
-BuildRequires:	python3-modules >= 1:3.5
+BuildRequires:	python3-modules >= 1:3.7
 BuildRequires:	python3-setuptools
 %if %{with tests}
+BuildRequires:	python3-debugpy >= 1.0.0
 BuildRequires:	python3-flaky
-BuildRequires:	python3-ipython >= 5.0.0
+BuildRequires:	python3-ipyparallel
+BuildRequires:	python3-ipython >= 7.23.1
 BuildRequires:	python3-jedi <= 0.17.2
+BuildRequires:	python3-jupyter_core >= 4.2
+BuildRequires:	python3-matplotlib_inline >= 0.1.0
 BuildRequires:	python3-nose
 BuildRequires:	python3-pytest
 BuildRequires:	python3-pytest-cov
 BuildRequires:	python3-traitlets >= 4.1.0
 BuildRequires:	python3-tornado >= 4.2
+%if "%{py3_ver}" < "3.8"
+BuildRequires:	python-importlib-metadata < 4
+%endif
 %endif
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.714
@@ -33,7 +40,7 @@ BuildRequires:	rpmbuild(macros) >= 1.714
 BuildRequires:	python3-sphinxcontrib_github_alt
 BuildRequires:	sphinx-pdg-3
 %endif
-Requires:	python3-modules >= 1:3.5
+Requires:	python3-modules >= 1:3.7
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
