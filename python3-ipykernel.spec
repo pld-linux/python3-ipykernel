@@ -6,21 +6,22 @@
 Summary:	IPython kernel for Jupyter
 Summary(pl.UTF-8):	Jądro IPythona dla Jupytera
 Name:		python3-ipykernel
-Version:	5.5.5
+Version:	6.29.5
 Release:	1
 License:	BSD
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/ipykernel/
 Source0:	https://files.pythonhosted.org/packages/source/i/ipykernel/ipykernel-%{version}.tar.gz
-# Source0-md5:	06e45221c8b70cd8edf95b321f20feae
+# Source0-md5:	761bc5a6ca03202e700763fe384b2caf
 URL:		https://pypi.org/project/ipykernel/
+BuildRequires:	python3-build
+BuildRequires:	python3-installer
 BuildRequires:	python3-jupyter_client
 BuildRequires:	python3-modules >= 1:3.5
-BuildRequires:	python3-setuptools
 %if %{with tests}
 BuildRequires:	python3-flaky
 BuildRequires:	python3-ipython >= 5.0.0
-BuildRequires:	python3-jedi <= 0.17.2
+BuildRequires:	python3-jedi
 BuildRequires:	python3-nose
 BuildRequires:	python3-pytest
 BuildRequires:	python3-pytest-cov
@@ -58,12 +59,14 @@ Dokumentacja API modułu Pythona ipykernel.
 %setup -q -n ipykernel-%{version}
 
 %build
-%py3_build
+%py3_build_pyproject
 
 %if %{with tests}
+%{__python3} -m zipfile -e build-3/*.whl build-3-test
+# use explicit plugins list for reliable builds (delete PYTEST_PLUGINS if empty)
 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
-PYTHONPATH=$(pwd) \
-%{__python3} -m pytest ipykernel
+PYTEST_PLUGINS= \
+%{__python3} -m pytest -o pythonpath="$PWD/build-3-test" tests
 %endif
 
 %if %{with doc}
@@ -74,26 +77,23 @@ PYTHONPATH=$(pwd) \
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%py3_install
+%py3_install_pyproject
 
 install -d $RPM_BUILD_ROOT%{_examplesdir}/python3-ipykernel-%{version}
 cp -a examples/* $RPM_BUILD_ROOT%{_examplesdir}/python3-ipykernel-%{version}
 find $RPM_BUILD_ROOT%{_examplesdir}/python3-ipykernel-%{version} -name '*.py' \
 	| xargs sed -i '1s|/usr/bin/env python|%{__python3}|'
 
-%{__rm} -r $RPM_BUILD_ROOT%{py3_sitescriptdir}/ipykernel/tests \
-	$RPM_BUILD_ROOT%{py3_sitescriptdir}/ipykernel/inprocess/tests
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc COPYING.md README.md
+%doc CHANGELOG.md  CONTRIBUTING.md README.md RELEASE.md
 %{py3_sitescriptdir}/ipykernel
 %{py3_sitescriptdir}/ipykernel_launcher.py
 %{py3_sitescriptdir}/__pycache__/ipykernel_launcher.cpython-*.py[co]
-%{py3_sitescriptdir}/ipykernel-%{version}-py*.egg-info
+%{py3_sitescriptdir}/ipykernel-%{version}.dist-info
 %dir %{_datadir}/jupyter
 %dir %{_datadir}/jupyter/kernels
 %{_datadir}/jupyter/kernels/python3
